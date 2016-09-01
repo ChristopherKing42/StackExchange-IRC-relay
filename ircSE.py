@@ -28,9 +28,9 @@ def on_message(message, client):
     if not isinstance(message, chatexchange.events.MessagePosted):
         # Ignore non-message_posted events.
         return
-    if message.content.startswith(':'):
-        return #a message from stack exchange
-
+    if message.user == client.get_me():
+        # Ignore messages from self
+        return
     irc.send("PRIVMSG " + channel + ' :<' + message.user.name + '> ' + message.content + '\r\n')
 
 host_id = 'stackexchange.com'
@@ -45,6 +45,8 @@ room.watch(on_message)
 def parseIRC(text):
     components = text.split(':',2)
     name = components[1].split('!')[0]
+    if "JOIN" in components[1]:
+        return name + " joined."
     message = components[2]
     return "<"+name+"> "+message
 
@@ -53,7 +55,7 @@ def parseIRC(text):
 while True:    #puts it in a loop
     text=irc.recv(2040)  #receive the text
 
-    if text.find('PING') != -1:                          #check if 'PING' is found
+    if 'PING' in text:                          #check if 'PING' is found
         irc.send('PONG ' + text.split() [1] + '\r\n') #returnes 'PONG' back to the server (prevents pinging out!)
 
     try: room.send_message(parseIRC(text))
