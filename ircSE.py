@@ -46,9 +46,9 @@ room.watch(on_message)
 
 while True:    #puts it in a loop
 	text=irc.recv(2040)  #receive the text
-	room.send_message(text)
 
 	if text.find('PING') != -1:                          #check if 'PING' is found
 		irc.send('PONG ' + text.split() [1] + '\r\n') #returnes 'PONG' back to the server (prevents pinging out!)
-
+	else:
+		room.send_message(text)
 
