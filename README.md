@@ -5,6 +5,6 @@ Do "pip install [ChatExchange](https://pypi.python.org/pypi/ChatExchange/0.0.2)"
 
 The room id is in the URL of the room.
 
-## Configuration files
+## Configuration files (optional)
 
 To make a configuration file, just create a text file and pip it into the script.
